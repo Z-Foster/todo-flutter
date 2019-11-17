@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/add_task_modal.dart';
+import 'package:todo/new_task_modal.dart';
+import 'styles.dart';
 
 class AddTaskFab extends StatefulWidget {
   @override
@@ -16,12 +17,19 @@ class _AddTaskFabState extends State<AddTaskFab> {
             child: Icon(Icons.add),
             onPressed: () {
               // modalFuture resolves when modal closes.
-              var controller = showBottomSheet(
+              var modalFuture = showModalBottomSheet(
                 context: context,
-                builder: (context) => AddTaskModal(),
+                // isScrollControlled is necessary for modal to increase in
+                // height dynamically with TextField.
+                isScrollControlled: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: Styles.bottomSheetBorderRadius,
+                ),
+                builder: (context) => NewTaskModal(),
               );
               _showFloatingActionButton(false);
-              controller.closed.then((_) => _showFloatingActionButton(true));
+              // Show fab on modal close.
+              modalFuture.then((_) => _showFloatingActionButton(true));
             })
         : Container();
   }

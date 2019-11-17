@@ -14,8 +14,8 @@ class TaskListModel extends ChangeNotifier {
 
   UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
 
-  addTask() {
-    _tasks.add(Task());
+  createTask(String text, {String details}) {
+    _tasks.add(Task(text: text, details: details));
     notifyListeners();
   }
 

@@ -4,13 +4,14 @@ import 'package:uuid/uuid.dart';
 class Task {
   final String id;
   String text;
+  String details;
   bool isComplete;
 
   Task({
     this.text: '',
+    this.details: '',
     this.isComplete: false,
-  })  : assert(text != null),
-        this.id = Uuid().v4();
+  }) : this.id = Uuid().v4();
 
   toggleComplete() {
     isComplete = !isComplete;
@@ -18,5 +19,9 @@ class Task {
 
   updateText(String text) {
     this.text = text;
+  }
+
+  updateDetails(String details) {
+    this.details = details;
   }
 }

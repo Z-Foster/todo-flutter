@@ -17,6 +17,15 @@ class TaskListItem extends StatelessWidget {
     );
   }
 
+  Widget _buildSubtitle() {
+    return Text(
+      task.details,
+      style: task.isComplete
+          ? TextStyle(decoration: TextDecoration.lineThrough)
+          : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -29,6 +38,7 @@ class TaskListItem extends StatelessWidget {
         },
       ),
       title: _buildTitle(),
+      subtitle: task.details.isNotEmpty ? _buildSubtitle() : null,
       trailing: IconButton(
         icon: Icon(Icons.delete),
         onPressed: () =>

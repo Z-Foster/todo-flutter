@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'model/task_list_model.dart';
 import 'styles.dart';
 
 class NewTaskModal extends StatefulWidget {
@@ -7,7 +9,19 @@ class NewTaskModal extends StatefulWidget {
 }
 
 class _NewTaskModalState extends State<NewTaskModal> {
+  FocusNode _taskDetailsFocusNode =
+      FocusNode(debugLabel: 'Task details focused');
   bool _detailsAdded = false;
+  bool _detailsInitiallyFocused = false;
+
+  String _taskText = '';
+  String _detailText = '';
+
+  @override
+  void dispose() {
+    _taskDetailsFocusNode.dispose();
+    super.dispose();
+  }
 
   _addDetails() {
     setState(() {
@@ -15,8 +29,42 @@ class _NewTaskModalState extends State<NewTaskModal> {
     });
   }
 
+  _setupFocus() {
+    if (_detailsAdded && !_detailsInitiallyFocused) {
+      FocusScope.of(context).requestFocus(_taskDetailsFocusNode);
+      setState(() {
+        _detailsInitiallyFocused = true;
+      });
+    }
+  }
+
+  _updateTaskText(String text) {
+    print('task: $text');
+
+    setState(() {
+      _taskText = text;
+    });
+  }
+
+  _updateDetailText(String text) {
+    print('details: $text');
+
+    setState(() {
+      _detailText = text;
+    });
+  }
+
+  _createTask() {
+    if (_taskText.isNotEmpty | !_detailText.isNotEmpty) {
+      Provider.of<TaskListModel>(context, listen: false)
+          .createTask(_taskText, details: _detailText);
+    }
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    _setupFocus();
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
@@ -39,7 +87,9 @@ class _NewTaskModalState extends State<NewTaskModal> {
                       border: InputBorder.none,
                     ),
                     autofocus: true,
-//                    validator: (value) => 'Enter something',
+                    onChanged: _updateTaskText,
+                    onFieldSubmitted: (_) => _createTask(),
+                    validator: (value) => 'Enter something',
                     // Close modal on submit.
                   ),
                 ),
@@ -51,9 +101,10 @@ class _NewTaskModalState extends State<NewTaskModal> {
                             hintText: 'Add details',
                             border: InputBorder.none,
                           ),
-                          autofocus: true,
+                          focusNode: _taskDetailsFocusNode,
                           style: TextStyle(fontSize: 14),
                           maxLines: null,
+                          onChanged: _updateDetailText,
 //                    validator: (value) => 'Enter something',
                           // Close modal on submit.
                         ),
@@ -82,7 +133,7 @@ class _NewTaskModalState extends State<NewTaskModal> {
                           style: Styles.buttonTextStyle,
                         ),
 //                    color: Colors.blue,
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: _createTask,
                       ),
                     ],
                   ),

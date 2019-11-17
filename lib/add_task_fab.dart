@@ -30,7 +30,8 @@ class _AddTaskFabState extends State<AddTaskFab> {
               _showFloatingActionButton(false);
               // Show fab on modal close.
               modalFuture.then((_) => _showFloatingActionButton(true));
-            })
+            },
+          )
         : Container();
   }
 

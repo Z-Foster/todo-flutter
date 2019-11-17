@@ -7,16 +7,30 @@ class TaskList extends StatelessWidget {
 
   TaskList({@required this.tasks});
 
+  Widget _buildEmptyState() {
+    return Container(
+      alignment: Alignment.topCenter,
+      padding: EdgeInsets.all(20),
+      child: Text(
+        'You don\'t have any tasks.',
+        style: TextStyle(
+          fontSize: 24,
+        ),
+      ),
+    );
+  }
+
 // Use Builders.
   @override
   Widget build(BuildContext context) {
     return tasks.isEmpty
-        ? Text('You don\'t have any tasks.')
+        ? _buildEmptyState()
         : ListView.separated(
             itemBuilder: (context, index) {
               return TaskListItem(task: tasks[index]);
             },
             separatorBuilder: (context, index) => Divider(),
-            itemCount: tasks.length);
+            itemCount: tasks.length,
+          );
   }
 }

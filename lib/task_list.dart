@@ -1,51 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:todo/model/task_list_model.dart';
 import 'package:todo/task_list_item.dart';
-import 'package:reorderables/reorderables.dart';
 import 'package:provider/provider.dart';
 import 'model/task.dart';
 
-class TaskList extends StatefulWidget {
-  final List<Task> tasks;
+class TaskList extends StatelessWidget {
+  final List<TaskListItem> taskItems;
 
-  TaskList({Key key, @required this.tasks}) : super(key: key);
-
-  @override
-  State createState() {
-    return _TaskListState();
-  }
-}
-
-class _TaskListState extends State<TaskList> {
-  ScrollController _scrollController = ScrollController();
+  TaskList({Key key, @required List<Task> tasks})
+      : taskItems = tasks.map((task) => TaskListItem(task: task)).toList(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     _onReorder(int oldIndex, int newIndex) {
+      int lastIndex = taskItems.length - 1;
+      if (newIndex > lastIndex) {
+        newIndex = lastIndex;
+      }
       Provider.of<TaskListModel>(context, listen: false)
           .reorderTask(oldIndex, newIndex);
     }
 
-    return widget.tasks.isEmpty
+    return taskItems.isEmpty
         ? _buildEmptyState()
-        : CustomScrollView(
-            controller: _scrollController,
-            slivers: <Widget>[
-              ReorderableSliverList(
-                onReorder: _onReorder,
-                onNoReorder: (index) => print('eh'),
-                delegate: ReorderableSliverChildBuilderDelegate(
-                  (context, index) => TaskListItem(
-                    task: widget.tasks[index],
-                  ),
-                  childCount: widget.tasks.length,
-                ),
-              )
-            ],
+        : ReorderableListView(
+            onReorder: _onReorder,
+            children: taskItems,
           );
   }
 
-  //  @override
+//  @override
 //  Widget build(BuildContext context) {
 //    return tasks.isEmpty
 //        ? _buildEmptyState()

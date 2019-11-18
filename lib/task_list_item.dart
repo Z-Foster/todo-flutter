@@ -5,8 +5,9 @@ import 'model/task.dart';
 
 class TaskListItem extends StatelessWidget {
   final Task task;
+  final Key key;
 
-  TaskListItem({@required this.task});
+  TaskListItem({@required this.task}) : key = ValueKey(task.id);
 
   Widget _buildTitle() {
     return Text(
@@ -29,7 +30,7 @@ class TaskListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      key: ValueKey(task.id),
+//      key: key,
       leading: Checkbox(
         value: task.isComplete,
         onChanged: (bool checked) {

@@ -29,9 +29,9 @@ class TaskListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      key: ValueKey(task.id),
       leading: Checkbox(
         value: task.isComplete,
-        // TODO - Dismiss focus when box is checked
         onChanged: (bool checked) {
           Provider.of<TaskListModel>(context, listen: false)
               .toggleComplete(task);

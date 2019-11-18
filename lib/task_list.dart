@@ -5,7 +5,7 @@ import 'model/task.dart';
 class TaskList extends StatelessWidget {
   final List<Task> tasks;
 
-  TaskList({@required this.tasks});
+  TaskList({Key key, @required this.tasks}) : super(key: key);
 
   Widget _buildEmptyState() {
     return Container(

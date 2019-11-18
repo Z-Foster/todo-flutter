@@ -17,11 +17,11 @@ class Task {
     isComplete = !isComplete;
   }
 
-  updateText(String text) {
+  setText(String text) {
     this.text = text;
   }
 
-  updateDetails(String details) {
+  setDetails(String details) {
     this.details = details;
   }
 }

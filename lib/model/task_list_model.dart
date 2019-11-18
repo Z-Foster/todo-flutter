@@ -30,8 +30,19 @@ class TaskListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateTaskText(Task task, String text) {
-    task.updateText(text);
+  setTaskText(Task task, String text) {
+    task.setText(text);
+    notifyListeners();
+  }
+
+  setTaskDetails(Task task, String details) {
+    task.setDetails(details);
+    notifyListeners();
+  }
+
+  reorderTask(int oldIndex, int newIndex) {
+    Task task = _tasks.removeAt(oldIndex);
+    _tasks.insert(newIndex, task);
     notifyListeners();
   }
 }

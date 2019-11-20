@@ -11,6 +11,9 @@ abstract class Styles {
   );
 
   static const Color clearColor = Color(0xFF737373);
+  static const Color deleteColor = Colors.red;
+  static const Color appColor = Colors.blue;
+  static const Color secondaryAppColor = Colors.white;
 //  static const TextStyle productRowItemName = TextStyle(
 //    color: Color.fromRGBO(0, 0, 0, 0.8),
 //    fontSize: 18,

@@ -41,6 +41,11 @@ class TaskListModel extends ChangeNotifier {
   }
 
   reorderTask(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      // If oldIndex is before newIndex, newIndex must be adjusted to account
+      // for the shift that happens when the item at oldIndex is removed.
+      newIndex -= 1;
+    }
     Task task = _tasks.removeAt(oldIndex);
     _tasks.insert(newIndex, task);
     notifyListeners();

@@ -23,7 +23,7 @@ class _NewTaskModalState extends State<NewTaskModal> {
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Styles.secondaryAppColor,
           borderRadius: Styles.bottomSheetBorderRadius,
         ),
         child: Padding(
@@ -66,13 +66,13 @@ class _NewTaskModalState extends State<NewTaskModal> {
                     IconButton(
                       padding: EdgeInsets.zero,
                       icon: Icon(Icons.subject),
-                      color: Colors.blue,
+                      color: Styles.appColor,
                       onPressed: _detailsAdded ? null : _addDetails,
                     ),
                     IconButton(
                       padding: EdgeInsets.zero,
                       icon: Icon(Icons.event_available),
-                      color: Colors.blue,
+                      color: Styles.appColor,
                       onPressed: null,
                     ),
                     Spacer(),
@@ -81,7 +81,6 @@ class _NewTaskModalState extends State<NewTaskModal> {
                         'Save',
                         style: Styles.buttonTextStyle,
                       ),
-//                    color: Colors.blue,
                       onPressed: _createTask,
                     ),
                   ],

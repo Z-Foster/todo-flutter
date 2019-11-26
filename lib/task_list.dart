@@ -1,32 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:todo/model/task_list_model.dart';
+import 'package:todo/reorderable_list_item.dart';
 import 'package:todo/task_list_item.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'model/task.dart';
 
 class TaskList extends StatelessWidget {
-  final List<TaskListItem> taskItems;
+  final List<TaskListItem> _taskItems;
 
   TaskList({Key key, @required List<Task> tasks})
-      : taskItems = tasks.map((task) => TaskListItem(task: task)).toList(),
+      : _taskItems = tasks.map((task) => TaskListItem(task: task)).toList(),
         super(key: key);
+
+  // Returns index of item with given key
+  int _indexOfKey(Key key) {
+    return _taskItems.indexWhere((TaskListItem item) => item.key == key);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _onReorder(int oldIndex, int newIndex) {
-      int lastIndex = taskItems.length - 1;
-      if (newIndex > lastIndex) {
-        newIndex = lastIndex;
-      }
+    bool _reorderCallback(Key item, Key newPosition) {
+      int draggingIndex = _indexOfKey(item);
+      int newPositionIndex = _indexOfKey(newPosition);
+
+      // Uncomment to allow only even target reorder position
+      // if (newPositionIndex % 2 == 1)
+      //   return false;
       Provider.of<TaskListModel>(context, listen: false)
-          .reorderTask(oldIndex, newIndex);
+          .reorderTask(draggingIndex, newPositionIndex);
+//    final draggedItem = _taskItems[draggingIndex];
+//    setState(() {
+//      debugPrint("Reordering $item -> $newPosition");
+//      _items.removeAt(draggingIndex);
+//      _items.insert(newPositionIndex, draggedItem);
+//    });
+      return true;
     }
 
-    return taskItems.isEmpty
+    return _taskItems.isEmpty
         ? _buildEmptyState()
-        : ReorderableListView(
-            onReorder: _onReorder,
-            children: taskItems,
+        : ReorderableList(
+            onReorder: _reorderCallback,
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverPadding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).padding.bottom),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return ReorderableListItem(
+                            key: _taskItems[index].key,
+                            child: _taskItems[index],
+                            isFirst: index == 0,
+                            isLast: index == _taskItems.length - 1,
+                          );
+                        },
+                        childCount: _taskItems.length,
+                      ),
+                    )),
+              ],
+            ),
           );
   }
 

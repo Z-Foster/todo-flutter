@@ -16,8 +16,8 @@ class _AddTaskFabState extends State<AddTaskFab> {
         ? FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: () {
-              // modalFuture resolves when modal closes.
-              var modalFuture = showModalBottomSheet(
+              // addTaskModalFuture resolves when modal closes.
+              var addTaskModalFuture = showModalBottomSheet(
                 context: context,
                 // isScrollControlled is necessary for modal to increase in
                 // height dynamically with TextField.
@@ -29,7 +29,9 @@ class _AddTaskFabState extends State<AddTaskFab> {
               );
               _showFloatingActionButton(false);
               // Show fab on modal close.
-              modalFuture.then((_) => _showFloatingActionButton(true));
+              addTaskModalFuture.then((_) {
+                _showFloatingActionButton(true);
+              });
             },
           )
         : Container();

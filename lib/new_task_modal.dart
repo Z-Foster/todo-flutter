@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/add_date_modal.dart';
 import 'model/task_list_model.dart';
 import 'styles.dart';
 
@@ -73,7 +74,21 @@ class _NewTaskModalState extends State<NewTaskModal> {
                       padding: EdgeInsets.zero,
                       icon: Icon(Icons.event_available),
                       color: Styles.appColor,
-                      onPressed: null,
+                      onPressed: () {
+                        // addDateModalFuture resolves when modal closes.
+                        var addDateModalFuture = showModalBottomSheet(
+                          context: context,
+                          // isScrollControlled is necessary for modal to increase in
+                          // height dynamically with TextField.
+//                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: Styles.bottomSheetBorderRadius,
+                          ),
+                          builder: (context) => AddDateModal(),
+                        );
+                        // Show fab on modal close.
+                        addDateModalFuture.then((_) {});
+                      },
                     ),
                     Spacer(),
                     FlatButton(

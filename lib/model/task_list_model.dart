@@ -19,6 +19,11 @@ class TaskListModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  addTask(Task task) {
+    _tasks.add(task);
+    notifyListeners();
+  }
+
   deleteTask(Task task) {
     _tasks.remove(task);
     notifyListeners();
